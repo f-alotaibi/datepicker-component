@@ -15,7 +15,7 @@ Use the minified version for production
 ```
 Also include a css file for styling, the repostory has [a style file](https://github.com/f-alotaibi/datepicker-component/blob/main/src/datepicker.css)
 ```
-<link rel="stylesheet" href="="https://cdn.jsdelivr.net/gh/f-alotaibi/datepicker-component/src/datepicker.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/f-alotaibi/datepicker-component/src/datepicker.css">
 ```
 And simply type to your html
 ```
