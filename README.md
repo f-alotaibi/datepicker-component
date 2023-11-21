@@ -2,6 +2,8 @@
 A Simple date picker, made using web components
 
 This component is mainly from [beforesemicolon datepicker](https://codepen.io/beforesemicolon/pen/jOMgZrY), replaced its date implementation with Javascript's `Date` for smaller size, along with easier styling.
+
+The component size is 12kb unminified
 # Getting started
 Include the component
 ```
