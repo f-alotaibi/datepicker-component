@@ -94,23 +94,44 @@ class DatePicker extends HTMLElement {
     calendarDaysContainer = null;
     selectedDayElement = null;
 
+    endDate = null;
+    startDate = null;
+    disableWeekDays = null;
+
     constructor() {
         super();
-
-        const date = new Date(this.date ?? (this.getAttribute("date") || Date.now()));
         this.shadow = this.attachShadow({
             mode: "open"
         });
-        this.date = date
-        this.calendar = new Calendar(date.getFullYear(), date.getMonth());
 
         this.format = this.getAttribute('format') || this.format;
         this.position = DatePicker.position.includes(this.getAttribute('position')) ?
             this.getAttribute('position') :
             this.position;
+        
         this.visible = this.getAttribute('visible') === '' ||
             this.getAttribute('visible') === 'true' ||
             this.visible;
+
+        this.startDate = (this.getAttribute('begin-date') ? new Date(this.getAttribute('begin-date')) : null)
+        this.endDate = (this.getAttribute('end-date') ? new Date(this.getAttribute('end-date')) : null)
+
+        let disabledWeekDays = (this.getAttribute('week-days-disabled') ? this.getAttribute('week-days-disabled').split(", ") : null);
+        this.disableWeekDays = Array.from({
+            length: (disabledWeekDays ? disabledWeekDays.length : 0)
+        });
+        for (let i = 0; i < this.disableWeekDays.length; i++){
+          this.disableWeekDays[i] = parseInt(disabledWeekDays[i])
+        }
+
+        let date = new Date(this.date ?? (this.getAttribute("date") || Date.now()));
+        if (this.startDate && date < this.startDate) {
+            date = this.startDate
+        } else if (this.endDate && this.date > this.endDate) {
+            date = this.endDate
+        }
+        this.date = date
+        this.calendar = new Calendar(date.getFullYear(), date.getMonth());
 
         this.setAttribute('value', this.calendar.getDay(this.date.getDate()).getTime())
 
@@ -199,6 +220,16 @@ class DatePicker extends HTMLElement {
     }
 
     updateHeaderText() {
+        if (this.startDate && new Date(this.calendar.currentYear, this.calendar.currentMonth, 0) < this.startDate){
+            this.shadow.querySelector(".month-navigator-prev").disabled = true
+        } else {
+            this.shadow.querySelector(".month-navigator-prev").disabled = false
+        }
+        if (this.endDate && new Date(this.calendar.currentYear, this.calendar.currentMonth + 1, 1) > this.endDate){
+            this.shadow.querySelector(".month-navigator-next").disabled = true
+        } else {
+            this.shadow.querySelector(".month-navigator-next").disabled = false
+        }
         const monthYear = format(this.calendar.getDay(1), "MMMM, YYYY")
         this.calendarDateElement.textContent = monthYear
         this.calendarDateElement
@@ -280,6 +311,10 @@ class DatePicker extends HTMLElement {
                     this.selectedDayElement = el;
                 }
             }
+            if (this.disableWeekDays.includes(day.getDay()) || (this.startDate && day < this.startDate) || (this.endDate && day > this.endDate)) {
+                el.part += ' month-day-disabled'
+                el.disabled = true
+            }
             this.calendarDaysContainer.appendChild(el);
         })
     }
@@ -342,11 +377,11 @@ class DatePicker extends HTMLElement {
         <div part="calendar-dropdown" class="calendar-dropdown ${this.visible ? 'visible' : ''} ${this.position}">
             <div part="header-div">
             <div part="header" class="header">
-            <button type="button" part="month-navigator" aria-label="previous month"></button>
+            <button type="button" class="month-navigator-prev" part="month-navigator" aria-label="previous month"></button>
             <h4 tabindex="0" part="header-text" aria-label="current month ${monthYear}">
               ${monthYear}
             </h4>
-            <button type="button" part="month-navigator month-navigator-next" aria-label="next month"></button>
+            <button type="button" class="month-navigator-next" part="month-navigator month-navigator-next" aria-label="next month"></button>
         </div>
         <div part="week-days">
         <span part="week-day">Sun</span>

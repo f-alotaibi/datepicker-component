@@ -142,3 +142,13 @@ date-picker::part(month-day-noncurrent-selected):hover {
     color: #fff;
     background: #8bbb9b;
 }
+
+date-picker::part(month-day-disabled) {
+    color: #000;
+    background: #d1d1d1;
+}
+
+date-picker::part(month-day-disabled):hover {
+    color: #000;
+    background: #d1d1d1;
+}

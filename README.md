@@ -3,7 +3,7 @@ A Simple date picker, made using web components
 
 This component is mainly from [beforesemicolon datepicker](https://codepen.io/beforesemicolon/pen/jOMgZrY), replaced its date implementation with Javascript's `Date` for smaller size, along with easier styling.
 
-The component size is 12kb unminified
+The component size is 14kb unminified
 # Getting started
 Include the component
 ```
@@ -24,3 +24,6 @@ And simply type to your html
 
 # Attributes
 `format`: changes the format of the output
+`week-days-disabled`: disables specified weekdays 
+`begin-date`: disables dates that are before
+`end-date`: disables dates that are after
