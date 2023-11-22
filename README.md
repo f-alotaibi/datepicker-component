@@ -24,6 +24,9 @@ And simply type to your html
 
 # Attributes
 `format`: changes the format of the output
+
 `week-days-disabled`: disables specified weekdays 
+
 `begin-date`: disables dates that are before
+
 `end-date`: disables dates that are after
