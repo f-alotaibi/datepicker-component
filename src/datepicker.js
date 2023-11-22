@@ -269,8 +269,9 @@ class DatePicker extends HTMLElement {
     getMonthDaysGrid() {
         const totalLastMonthFinalDays = this.calendar.getDay(1).getDay()
         const totalDays = new Date(this.calendar.currentYear, this.calendar.currentMonth + 1, 0).getDate() + totalLastMonthFinalDays;
+        const restOfDays = 42 - totalDays;
         const monthList = Array.from({
-            length: totalDays
+            length: 42
         });
 
         for (let i = 0; i < totalLastMonthFinalDays; i++) {
@@ -278,6 +279,9 @@ class DatePicker extends HTMLElement {
         }
         for (let i = 0; i < totalDays - totalLastMonthFinalDays; i++){
             monthList[i + totalLastMonthFinalDays] = this.calendar.getDay(i + 1)
+        }
+        for (let i = 0; i < restOfDays; i++){
+            monthList[totalDays + i] = new Date(this.calendar.currentYear, this.calendar.currentMonth + 1, 1 + i);
         }
         return monthList;
     }
